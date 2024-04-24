@@ -27,4 +27,5 @@ jobs:
 
     - name: Executar testes Cypress
       run: |
-        $(npm bin)/cypress run --browser chrome --headless --config baseUrl=http://localhost
+        ./node_modules/.bin/cypress run --browser chrome --headless --config baseUrl=http://localhost
+
