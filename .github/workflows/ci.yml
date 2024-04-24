@@ -1,0 +1,30 @@
+name: Testes do GitLab CE com Cypress
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      gitlab-ce:
+        image: wlsf82/gitlab-ce
+        ports:
+          - 80:80
+          - 22:22
+        options: --hostname localhost
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v2
+
+    - name: Esperar pelo GitLab CE
+      run: sleep 60   # Espera 60 segundos para garantir que o GitLab CE esteja pronto
+
+    - name: Instalar Cypress
+      run: |
+        npm install cypress
+
+    - name: Executar testes Cypress
+      run: |
+        $(npm bin)/cypress run --browser chrome --headless --config baseUrl=http://localhost
