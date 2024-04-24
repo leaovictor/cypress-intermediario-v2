@@ -22,7 +22,7 @@ jobs:
       run: sleep 120   # Aumentamos o tempo de espera para 120 segundos para garantir que o GitLab CE esteja pronto
 
     - name: Verificar status do GitLab CE
-      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" gitlab-ce
+      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" service.gitlab-ce
 
     - name: Instalar Cypress
       run: |
@@ -31,4 +31,3 @@ jobs:
     - name: Executar testes Cypress
       run: |
         ./node_modules/.bin/cypress run --browser chrome --headless --config baseUrl=http://localhost
-
