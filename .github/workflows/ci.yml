@@ -21,8 +21,11 @@ jobs:
     - name: Esperar pelo GitLab CE
       run: sleep 120   # Aumentamos o tempo de espera para 120 segundos para garantir que o GitLab CE esteja pronto
 
+    - name: Verificar contêineres em execução
+      run: docker ps
+
     - name: Verificar status do GitLab CE
-      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" gitlab-ce
+      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" ${{ job.services.gitlab-ce.id }}
 
     - name: Instalar Cypress
       run: npm install cypress
