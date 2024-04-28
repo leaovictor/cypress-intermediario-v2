@@ -31,4 +31,4 @@ jobs:
       run: npm install cypress
 
     - name: Executar testes Cypress
-      run: ./node_modules/.bin/cypress-intermediario-v2\cypress\e2e\GUI\sign_up.cy.js run --browser chrome --headless --config baseUrl=http://localhost
+      run: ./node_modules/.bin/cypress-intermediario-v2/cypress/e2e/GUI/sign_up.cy.js run --browser chrome --headless --config baseUrl=http://localhost
