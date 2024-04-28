@@ -11,7 +11,7 @@ jobs:
         image: wlsf82/gitlab-ce
         ports:
           - 80:80
-          - 2222:22  # Alterado para usar a porta 2222 para SSH
+          - 22:22  # Alterado para usar a porta 2222 para SSH
         options: --hostname localhost
 
     steps:
