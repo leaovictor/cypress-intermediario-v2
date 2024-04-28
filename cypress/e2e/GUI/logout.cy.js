@@ -4,7 +4,7 @@ describe('Teste de logout', () => {
         cy.visit('/')
         cy.login()
       });
-    
+      
   it('Deve fazer logout com sucesso', () => {
     cy.logout();
     cy.get('[data-qa-selector="sign_in_button"]').should('be.visible');
