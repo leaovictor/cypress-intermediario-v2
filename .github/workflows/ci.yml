@@ -16,7 +16,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '14'  # Altere a versão do Node.js conforme necessário
+          node-version: '14'
+
+      - name: Instalar Cypress
+        run: npm install cypress --save-dev
 
       - name: Instalar dependências
         run: npm install
