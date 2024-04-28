@@ -1,38 +1,33 @@
-name: Testes Cypress
+name: Testes do GitLab CE com Cypress
 
-on:
-  push:
-    branches:
-      - main  # Substitua "main" pelo nome do seu branch principal, se necessário
+on: [push]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      gitlab-ce:
+        image: wlsf82/gitlab-ce
+        ports:
+          - 80:80
+          - 2222:22  # Alterado para usar a porta 2222 para SSH
+        options: --hostname localhost
+
     steps:
-      # Inicializar o contêiner Docker do GitLab CE
-      - name: Iniciar contêiner Docker do GitLab CE
-        run: docker run --publish 80:80 --publish 22:22 --hostname localhost wlsf82/gitlab-ce
+    - name: Checkout do código
+      uses: actions/checkout@v2
 
-      # Aguardar a disponibilidade do servidor GitLab CE (opcional - dependendo do tempo de inicialização do servidor)
-      - name: Aguardar a disponibilidade do servidor GitLab CE
-        run: sleep 30  # Aguarda 30 segundos para garantir que o servidor esteja pronto
+    - name: Esperar pelo GitLab CE
+      run: sleep 120   # Aumentamos o tempo de espera para 120 segundos para garantir que o GitLab CE esteja pronto
 
-      # Checkout do código e instalação das dependências
-      - name: Checkout do código
-        uses: actions/checkout@v2
+    - name: Verificar status do GitLab CE
+      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" service.gitlab-ce
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Instalar Cypress
+      run: |
+        npm install cypress
 
-      - name: Instalar Cypress
-        run: npm install cypress --save-dev
-
-      - name: Instalar dependências
-        run: npm install
-
-      # Executar testes Cypress
-      - name: Executar testes Cypress
-        run: npm run cypress:run
+    - name: Executar testes Cypress
+      run: |
+        ./node_modules/.bin/cypress run --browser chrome --headless --config baseUrl=http://localhost
