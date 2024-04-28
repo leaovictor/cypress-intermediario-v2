@@ -1,6 +1,9 @@
 name: Testes do GitLab CE com Cypress
 
-on: [push]
+on:
+  push:
+    branches:
+      - main  # Substitua "main" pelo nome do seu branch principal, se necessário
 
 jobs:
   test:
@@ -8,26 +11,24 @@ jobs:
 
     services:
       gitlab-ce:
-        image: wlsf82/gitlab-ce
+        image: gitlab/gitlab-ce:latest  # Use a imagem oficial do GitLab CE
         ports:
           - 80:80
           - 2222:22  # Mudamos a porta SSH para 2222
         options: --hostname localhost
 
     steps:
-    - name: Checkout do código
-      uses: actions/checkout@v2
+      - name: Checkout do código
+        uses: actions/checkout@v2
 
-    - name: Esperar pelo GitLab CE
-      run: sleep 120   # Aumentamos o tempo de espera para 120 segundos para garantir que o GitLab CE esteja pronto
+      - name: Esperar pelo GitLab CE
+        run: sleep 120   # Aumentamos o tempo de espera para 120 segundos para garantir que o GitLab CE esteja pronto
 
-    - name: Verificar status do GitLab CE
-      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" service.gitlab-ce
+      - name: Verificar status do GitLab CE
+        run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" gitlab-ce
 
-    - name: Instalar Cypress
-      run: |
-        npm install cypress
+      - name: Instalar Cypress
+        run: npm install cypress
 
-    - name: Executar testes Cypress
-      run: |
-        ./node_modules/.bin/cypress run --browser chrome --headless --config baseUrl=http://localhost
+      - name: Executar testes Cypress
+        run: npm run cypress:run
