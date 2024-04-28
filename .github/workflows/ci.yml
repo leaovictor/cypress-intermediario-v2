@@ -10,11 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Inicializar o contêiner Docker do GitLab CE
+      - name: Iniciar contêiner Docker do GitLab CE
+        run: docker run --publish 80:80 --publish 22:22 --hostname localhost wlsf82/gitlab-ce
+
+      # Aguardar a disponibilidade do servidor GitLab CE (opcional - dependendo do tempo de inicialização do servidor)
+      - name: Aguardar a disponibilidade do servidor GitLab CE
+        run: sleep 30  # Aguarda 30 segundos para garantir que o servidor esteja pronto
+
+      # Checkout do código e instalação das dependências
       - name: Checkout do código
         uses: actions/checkout@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: '14'
 
@@ -24,5 +33,6 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      # Executar testes Cypress
       - name: Executar testes Cypress
         run: npm run cypress:run
