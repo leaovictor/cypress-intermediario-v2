@@ -11,7 +11,7 @@ jobs:
         image: wlsf82/gitlab-ce
         ports:
           - 80:80
-          - 22:22  # Alterado para usar a porta 2222 para SSH
+          - 2222:22  # Mapeando a porta SSH para a porta 2222
         options: --hostname localhost
 
     steps:
@@ -22,12 +22,10 @@ jobs:
       run: sleep 120   # Aumentamos o tempo de espera para 120 segundos para garantir que o GitLab CE esteja pronto
 
     - name: Verificar status do GitLab CE
-      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" service.gitlab-ce
+      run: docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" gitlab-ce
 
     - name: Instalar Cypress
-      run: |
-        npm install cypress
+      run: npm install cypress
 
     - name: Executar testes Cypress
-      run: |
-        ./node_modules/.bin/cypress run --browser chrome --headless --config baseUrl=http://localhost
+      run: ./node_modules/.bin/cypress run --browser chrome --headless --config baseUrl=http://localhost
