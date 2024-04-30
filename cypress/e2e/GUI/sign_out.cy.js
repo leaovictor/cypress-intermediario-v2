@@ -1,14 +1,16 @@
+
+
 describe('Teste de logout', () => {
+  beforeEach(() => {
+      cy.visit('/');
+      cy.loginWithLastRegisteredUser();
+  });
 
-    beforeEach(() => {
-        cy.visit('/')
-        cy.login()
-      });
-      
   it('Deve fazer logout com sucesso', () => {
-    cy.logout();
-    cy.get('[data-qa-selector="sign_in_button"]').should('be.visible');
-    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/users/sign_in`)
-
+      cy.logout();
+      // Garantir que a URL após o logout seja a correta
+      cy.url().should('eq', `${Cypress.config('baseUrl')}/users/sign_in`); 
+      // Verificar se o botão de login está visível após o logout
+      cy.get('[data-qa-selector="sign_in_button"]').should('be.visible');
   });
 });

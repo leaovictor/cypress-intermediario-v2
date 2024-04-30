@@ -27,5 +27,8 @@ jobs:
     - name: Instalar Cypress
       run: npm install cypress
 
+    - name: Cadastrando um usuário primeiro
+      run: ./node_modules/.bin/cypress run --spec "cypress/e2e/sign_up.spec.js" --browser chrome --headless --config baseUrl=http://localhost
+
     - name: Executar testes Cypress
       run: ./node_modules/.bin/cypress run --spec "cypress/e2e/GUI/" --browser chrome --headless --config baseUrl=http://localhost

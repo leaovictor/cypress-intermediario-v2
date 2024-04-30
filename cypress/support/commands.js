@@ -12,6 +12,17 @@ Cypress.Commands.add('login', () => {
 
 
 Cypress.Commands.add('logout', () => {
+    cy.visit('/');
     cy.get('.header-user-dropdown-toggle').click();
     cy.get('.sign-out-link').click();
 })
+
+Cypress.Commands.add('loginWithLastRegisteredUser', () => {
+    cy.readFile('usuario.json').then(usuario => {
+      cy.visit('/login');
+      cy.get('#user_login').type(usuario.username.toLowerCase());
+      cy.get('#user_password').type(usuario.password);
+      cy.get('#new_user > .submit-container > .btn').click();
+    });
+  });
+  
