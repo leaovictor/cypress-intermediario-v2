@@ -10,7 +10,7 @@ describe('Esta suite testa a funcionalidade de cadastro', () => {
 
         // Cadastro do usuário
         cy.visit('/');
-        cy.get('[data-qa-selector="register_tab"]').click();
+        cy.get(':nth-child(2) > .nav-link').click();
         cy.get('#new_user_name').type(fullName);
         cy.get('#new_user_username').type(userName);
         cy.get('#new_user_email').type(email);
